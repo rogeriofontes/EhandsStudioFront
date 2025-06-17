@@ -27,26 +27,41 @@ export default function CadastroUserPage() {
       const payload = {
         login,
         password,
-        role,  
+        role: role.toUpperCase(),
       };
 
-      
-    await axios.post("http://localhost:8080/api/auth/register", payload, {
-      headers: { "Content-Type": "application/json" },
-    });
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/register",
+        payload,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
-    setSuccess("Usuário criado com sucesso! Redirecionando...");
+      const createdUser = response.data; 
 
-    setTimeout(() => {
-      router.push("/login");
-    }, 1500);
-  } catch (err) {
-    console.error("Erro ao criar usuário:", err.response?.data || err.message);
-    setError("Erro ao criar usuário. Tente novamente.");
-  } finally {
-    setLoading(false);
-  }
-};
+      localStorage.setItem("userId", createdUser.id);
+      localStorage.setItem("userRole", createdUser.role);
+      localStorage.setItem("userLogin", createdUser.login);
+
+      setSuccess("Usuário criado com sucesso! Redirecionando...");
+
+      setTimeout(() => {
+        if (role.toUpperCase() === "ARTIST") {
+          router.push("/signup-register?role=ARTIST");
+        } else if (role.toUpperCase() === "CUSTOMER") {
+          router.push("/signup-register?role=CUSTOMER");
+        } else {
+          router.push("/login");
+        }
+      }, 1500);
+    } catch (err) {
+      console.error("Erro ao criar usuário:", err.response?.data || err.message);
+      setError("Erro ao criar usuário. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -58,18 +73,18 @@ export default function CadastroUserPage() {
         <div className="flex justify-center gap-4 mb-6">
           <button
             type="button"
-            onClick={() => setRole("artist")}
+            onClick={() => setRole("ARTIST")}
             className={`px-4 py-2 rounded border ${
-              role === "artist" ? "bg-blue-600 text-white" : "bg-white text-black"
+              role === "ARTIST" ? "bg-blue-600 text-white" : "bg-white text-black"
             }`}
           >
             Quero vender
           </button>
           <button
             type="button"
-            onClick={() => setRole("customer")}
+            onClick={() => setRole("CUSTOMER")}
             className={`px-4 py-2 rounded border ${
-              role === "customer" ? "bg-blue-600 text-white" : "bg-white text-black"
+              role === "CUSTOMER" ? "bg-blue-600 text-white" : "bg-white text-black"
             }`}
           >
             Quero comprar
