@@ -9,6 +9,7 @@ export default function Footer() {
             <div className="first-item">
               <h4>Bem Vindos</h4>
               <ul>
+                <li><a href="http://localhost:3000/">Home</a></li>
                 <li><a href="mailto:maosencantadas@ehands.com">Bem vindo ao nosso site, dúvidas e sugestões envie um email.</a></li>
                 <li><a href="#">maosencantadas@ehands.com</a></li>
                 
@@ -26,10 +27,9 @@ export default function Footer() {
           <div className="col-lg-3">
             <h4>Dúvidas</h4>
             <ul>
-              <li><a href="#">Home</a></li>
-              <li><a href="#">Sobre nós</a></li>
-              <li><a href="#">Política de Compra</a></li>
-              <li><a href="#">Política de Devolução</a></li>
+              <li><a href="http://localhost:3000/about">Sobre nós</a></li>
+              <li><a href="http://localhost:3000/deliveryInfo">Política de Envio</a></li>
+              <li><a href="http://localhost:3000/devolucionInfo">Política de Devolução</a></li>
             </ul>
           </div>
           <div className="col-lg-3">
@@ -37,8 +37,7 @@ export default function Footer() {
             <ul>
               <li><a href="#">Quero comprar</a></li>
               <li><a href="#">Quero Vender</a></li>
-              <li><a href="#">Como pagar</a></li>
-              <li><a href="#">Como é enviado</a></li>
+              <li><a href="http://localhost:3000/paymentInfo">Como pagar</a></li>
             </ul>
           </div>
           <div className="col-lg-12">

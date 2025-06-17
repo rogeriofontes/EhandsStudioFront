@@ -111,7 +111,7 @@ export default function Highlights() {
                     : "Preço indisponível"}
                 </span>
                 <p style={{ marginTop: "5px", fontSize: "14px", color: "#666" }}>
-                  {item.category?.name || "Categoria não informada"}
+                  {item.categoryName || "Categoria não informada"}
                 </p>
               </div>
             </div>

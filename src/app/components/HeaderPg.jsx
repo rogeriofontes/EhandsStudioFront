@@ -28,10 +28,9 @@ export default function Header() {
                 <li className="submenu">
                   <Link href="#">Dúvidas</Link>
                   <ul>
-                    <li><Link href="/payments">Sobre pagamento</Link></li>
-                    <li><Link href="/delivery">Sobre entrega</Link></li>
-                    <li><Link href="/devolucion">Sobre devolução</Link></li>
-                    
+                    <li><Link href="/paymentInfo">Sobre pagamento</Link></li>
+                    <li><Link href="/deliveryInfo">Sobre envio</Link></li>
+                    <li><Link href="/devolucionInfo">Sobre devolução</Link></li>
                   </ul>
                 </li>
                 <li className="scroll-to-section">

@@ -86,7 +86,7 @@ export default function SingleProductPage() {
     );
   }
 
-  const { name, description, size, imageUrl, price, artist, category } = product;
+  const { name, description, size, imageUrl, price, artistName, categoryName } = product;
 
   return (
     <>
@@ -111,11 +111,11 @@ export default function SingleProductPage() {
             </p>
             <p className="mb-2">
               <span className="font-semibold">Artista: </span>
-              {artist?.name || "Não informado"}
+              {artistName || "Não informado"}
             </p>
             <p className="mb-2">
               <span className="font-semibold">Categoria: </span>
-              {category?.name || "Não informada"}
+              {categoryName || "Não informada"}
             </p>
             <p className="mb-6 text-xl font-semibold">R$ {price}</p>
 
