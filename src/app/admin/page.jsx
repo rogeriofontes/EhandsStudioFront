@@ -2,15 +2,16 @@
 
 import { useEffect, useState } from "react";
 import HeaderAdmin from "../components/HeaderAdmin";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 
-function getArtistIdFromToken() {
+function getArtistUserIdFromToken() {
   try {
     const token = localStorage.getItem("token");
+    console.log("Token do localStorage [ADMIN]:", token);
     if (token) {
       const decoded = jwtDecode(token);
-      return decoded.artistId || decoded.id; 
+      return decoded.userId; 
     }
   } catch (error) {
     console.error("Erro ao decodificar o token", error);
@@ -21,18 +22,18 @@ function getArtistIdFromToken() {
 export default function ArtistDashboard() {
   const [activeTab, setActiveTab] = useState("personal-data");
   const [artistData, setArtistData] = useState(null);
-  const artistId = getArtistIdFromToken();
+  const userId = getArtistUserIdFromToken();
 
   useEffect(() => {
-    if (artistId) {
+    if (userId) {
       axios
-        .get(`http://localhost:8080/api/artists/${artistId}`)
+        .get(`http://localhost:8080/api/artists/user/${userId}`)
         .then((response) => setArtistData(response.data))
         .catch((error) => console.error("Erro ao carregar dados do artista", error));
     }
-  }, [artistId]);
+  }, [userId]);
 
-  if (!artistId) {
+  if (!userId) {
     return <p>Você precisa estar logado como artista para acessar o painel.</p>;
   }
 

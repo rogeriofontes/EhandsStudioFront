@@ -38,7 +38,9 @@ export default function CadastroUserPage() {
         }
       );
 
-      const createdUser = response.data; 
+      const createdUser = response.data;
+
+      console.log("Usuário criado com sucesso:", createdUser);
 
       localStorage.setItem("userId", createdUser.id);
       localStorage.setItem("userRole", createdUser.role);
@@ -47,13 +49,13 @@ export default function CadastroUserPage() {
       setSuccess("Usuário criado com sucesso! Redirecionando...");
 
       setTimeout(() => {
-        if (role.toUpperCase() === "ARTIST") {
-          router.push("/signup-register?role=ARTIST");
-        } else if (role.toUpperCase() === "CUSTOMER") {
-          router.push("/signup-register?role=CUSTOMER");
-        } else {
+        //if (role.toUpperCase() === "ARTIST") {
+         // router.push("/signup-register?role=ARTIST");
+        //} else if (role.toUpperCase() === "CUSTOMER") {
+         // router.push("/signup-register?role=CUSTOMER");
+       // } else {
           router.push("/login");
-        }
+       // }
       }, 1500);
     } catch (err) {
       console.error("Erro ao criar usuário:", err.response?.data || err.message);
@@ -74,18 +76,16 @@ export default function CadastroUserPage() {
           <button
             type="button"
             onClick={() => setRole("ARTIST")}
-            className={`px-4 py-2 rounded border ${
-              role === "ARTIST" ? "bg-blue-600 text-white" : "bg-white text-black"
-            }`}
+            className={`px-4 py-2 rounded border ${role === "ARTIST" ? "bg-blue-600 text-white" : "bg-white text-black"
+              }`}
           >
             Quero vender
           </button>
           <button
             type="button"
             onClick={() => setRole("CUSTOMER")}
-            className={`px-4 py-2 rounded border ${
-              role === "CUSTOMER" ? "bg-blue-600 text-white" : "bg-white text-black"
-            }`}
+            className={`px-4 py-2 rounded border ${role === "CUSTOMER" ? "bg-blue-600 text-white" : "bg-white text-black"
+              }`}
           >
             Quero comprar
           </button>

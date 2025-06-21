@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";  
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 
 export default function LoginForm() {
@@ -18,55 +19,52 @@ export default function LoginForm() {
     }
   }, [searchParams]);
 
- const handleLogin = async (e) => {
-  e.preventDefault();
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-  try {
-    const response = await axios.post("http://localhost:8080/api/auth/login", {
-      login,
-      password,
-    });
-
-    const { token, user } = response.data;
-
-    localStorage.setItem("authToken", token);
-    localStorage.setItem("userId", user.id);
-
-    const pending = localStorage.getItem("pendingBudget");
-
-    if (pending) {
-      const { description, productId } = JSON.parse(pending);
-
-      const formData = new FormData();
-      formData.append("description", description);
-      formData.append("productId", productId);
-      formData.append("customerId", user.id);
-
-      await axios.post("http://localhost:8080/api/v1/budgets", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
+    try {
+      const response = await axios.post("http://localhost:8080/api/auth/login", {
+        login,
+        password,
       });
 
-        localStorage.removeItem("pendingBudget");
+      console.log("Resposta do servidor:", response.data);
+      const { token } = response.data;
 
-          router.push(`/budget?productId=${productId}`);
+      if (!token) {
+        setError("Token não recebido. Verifique suas credenciais.");
+        return;
+      } else if (token) {
+        const { userId, role } = jwtDecode(token);
+        console.log("Usuário decodificado:", userId);
+
+        if (!userId) {
+          setError("ID do usuário não encontrado no token.");
           return;
         }
 
-        const redirect = searchParams.get("redirect");
-        if (redirect) {
-          router.push(redirect);
-        } else if (user.role === "ADMIN") {
+        localStorage.setItem("userId", userId);
+        localStorage.setItem("role", role);
+        localStorage.setItem("token", token);
+
+        console.log("Usuário logado com sucesso:", userId);
+        console.log("Role do usuário:", role);
+        console.log("Token recebido:", token);
+
+        if (role === "ADMIN") {
           router.push("/admin");
+        } else if (role === "USER" || role === "ARTIST") {
+          router.push("/artists/budgets");
         } else {
-          router.push("/budgets");
+          setError("Função de usuário desconhecida.");
         }
-      } catch (err) {
-        setError("Login inválido. Verifique suas credenciais.");
+
       }
-    };
+    } catch (err) {
+      console.error("Erro ao fazer login:", err);
+      setError("Login inválido. Verifique suas credenciais.");
+    }
+  };
 
   return (
     <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full mx-auto mt-20">
